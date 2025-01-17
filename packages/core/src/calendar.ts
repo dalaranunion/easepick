@@ -42,7 +42,7 @@ export default class Calendar {
 
     this.picker.trigger('render', { date: date.clone(), view: 'Main' });
 
-    if (!this.picker.options.autoApply) {
+    if (!this.picker.options.hideOnDateSelect) {
       this.picker.trigger('render', { date: date.clone(), view: 'Footer' });
     }
   }
@@ -143,21 +143,52 @@ export default class Calendar {
    */
   public getFooterView(date: DateTime): void {
     const element = document.createElement('footer');
-
-    const buttons = document.createElement('div');
-    buttons.className = 'footer-buttons';
-
-    const cancelButton = document.createElement('button');
-    cancelButton.className = 'cancel-button unit';
-    cancelButton.innerHTML = this.picker.options.locale.cancel;
-    buttons.appendChild(cancelButton);
-
-    const applyButton = document.createElement('button');
-    applyButton.className = 'apply-button unit';
-    applyButton.innerHTML = this.picker.options.locale.apply;
-    applyButton.disabled = true;
-    buttons.appendChild(applyButton);
-    element.appendChild(buttons);
+    if(!this.picker.options.hideOnDateSelect && this.picker.options.applyButton) {
+      const buttons = document.createElement('div');
+      buttons.className = 'footer-buttons';
+  
+      const cancelButton = document.createElement('button');
+      cancelButton.className = 'cancel-button unit';
+      cancelButton.innerHTML = this.picker.options.locale.cancel;
+      buttons.appendChild(cancelButton);
+  
+      const applyButton = document.createElement('button');
+      applyButton.className = 'apply-button unit';
+      applyButton.innerHTML = this.picker.options.locale.apply;
+      applyButton.disabled = true;
+      buttons.appendChild(applyButton);
+      element.appendChild(buttons);
+    }
+    if(!this.picker.options.hideOnDateSelect && !this.picker.options.applyButton) {
+      const indicatorCtr = document.createElement('div');
+      indicatorCtr.className = "selected-dates-indicator";
+      const indicator = document.createElement('button');
+      indicator.className = 'indicator-button apply-button unit';
+      const indicatorStart = document.createElement('span');
+      indicatorStart.className = 'indicator-start';
+      const indicatorTitle = document.createElement('span');
+      indicatorTitle.className = 'indicator-title';
+      indicatorTitle.innerHTML = 'Selected';
+      indicator.disabled = true;          
+      if(this.picker.options.date || this.picker.datePicked.length) {
+        indicatorCtr.classList.add('date-selected');
+        const date = this.picker.getDate();
+        const pickedDate =  this.picker.datePicked[0] instanceof Date ? this.picker.datePicked[0] : null;
+        const existingDate = !date
+          ? pickedDate
+          : date && pickedDate
+          ? pickedDate
+          : date;
+        indicatorStart.innerHTML = 
+          `${existingDate.getDate()}${this.picker.daySuffix(existingDate.getDate())} ${this.picker.monthMap[existingDate.getMonth()]}`;
+        indicator.appendChild(indicatorStart);
+        indicator.disabled = false;    
+      }
+      indicatorCtr.appendChild(indicatorTitle);
+      indicatorCtr.appendChild(indicator);
+      indicator.appendChild(indicatorStart);
+      element.appendChild(indicatorCtr);
+    }
 
     this.picker.ui.container.appendChild(element);
     this.picker.trigger('view', { date, target: element, view: 'Footer' });

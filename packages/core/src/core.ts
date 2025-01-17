@@ -30,7 +30,9 @@ export class Core {
     date: null,
     format: 'YYYY-MM-DD',
     readonly: true,
+    applyButton: false,
     autoApply: true,
+    hideOnDateSelect: false,
     header: false,
     inline: false,
     scrollToDate: true,
@@ -103,7 +105,36 @@ export class Core {
     const targetDate = this.options.scrollToDate ? this.getDate() : null;
     this.renderAll(targetDate);
   }
-
+  public monthMap: string[] = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  public daySuffix(number: number): string {
+    switch (number) {
+      case 1:
+        return 'st';
+        break;
+      case 2:
+        return 'nd';
+        break;
+      case 3:
+        return 'rd';
+        break;
+      default:
+        return 'th';
+        break;
+      }
+  }
   /**
    * Add listener to container element
    * 
@@ -168,7 +199,7 @@ export class Core {
   public onView(event: CustomEvent) {
     const { view, target } = event.detail;
 
-    if (view === 'Footer' && this.datePicked.length) {
+    if (view === 'Footer' && (this.datePicked.length || this.getDate()) ) {
       const applyButton = target.querySelector('.apply-button');
       applyButton.disabled = false;
     }
@@ -202,8 +233,8 @@ export class Core {
         this.setDate(date);
 
         this.trigger('select', { date: this.getDate() });
-
-        this.hide();
+        if(this.options.hideOnDateSelect)
+          this.hide();
       } else {
         this.datePicked[0] = date;
 
@@ -475,6 +506,9 @@ export class Core {
       this.calendars[0] = new DateTime(this.options.date, this.options.format);
     } else {
       this.calendars[0] = new DateTime();
+    }
+    if(!this.options.autoApply && this.options.hideOnDateSelect) {
+      this.options.autoApply = true;
     }
   }
 

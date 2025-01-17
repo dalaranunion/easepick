@@ -9,6 +9,7 @@ export interface IRangeConfig extends IBaseConfig {
   strict?: boolean;
   delimiter?: string;
   tooltip?: boolean;
+  applyButton?:boolean;
   tooltipNumber?: (num: number) => number;
   locale?: {
     zero?: string;

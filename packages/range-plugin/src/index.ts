@@ -4,6 +4,7 @@ import { IRangeConfig } from './interface';
 import './index.scss';
 
 export class RangePlugin extends BasePlugin implements IPlugin {
+
   public tooltipElement: HTMLElement;
   public triggerElement: HTMLElement;
 
@@ -23,7 +24,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     updateValues: this.updateValues.bind(this),
     clear: this.clear.bind(this),
   };
-
   public options: IRangeConfig = {
     elementEnd: null,
     startDate: null,
@@ -32,6 +32,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     strict: true,
     delimiter: ' - ',
     tooltip: true,
+    applyButton: true,
     tooltipNumber: (num: number) => {
       return num;
     },
@@ -45,7 +46,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     },
     documentClick: this.hidePicker.bind(this),
   };
-
   /**
    * Returns plugin name
    * 
@@ -60,6 +60,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * The function execute on initialize the picker
    */
   public onAttach(): void {
+    
     this.binds['_setStartDate'] = this.picker.setStartDate;
     this.binds['_setEndDate'] = this.picker.setEndDate;
     this.binds['_setDateRange'] = this.picker.setDateRange;
@@ -111,7 +112,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       onClickApplyButton: {
         configurable: true,
         value: this.binds.onClickApplyButton,
-      }
+      },
     });
 
     if (this.options.elementEnd) {
@@ -325,7 +326,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
     this.initializeRepick();
   }
-
   /**
    * Function `view` event
    * Adds HTML layout of current plugin to the picker layout
@@ -363,10 +363,62 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     }
 
     if (view === 'Footer') {
-      const allowApplyBtn = (this.picker.datePicked.length === 1 && !this.options.strict)
-        || this.picker.datePicked.length === 2;
-      const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
-      applyButton.disabled = !allowApplyBtn;
+      if(!this.picker.options.hideOnDateSelect &&  this.picker.options.applyButton) {
+        const allowApplyBtn = (this.picker.datePicked.length === 1 && !this.options.strict)
+          || this.picker.datePicked.length === 2;
+        const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
+        applyButton.disabled = !allowApplyBtn;
+      }
+      if(!this.picker.options.hideOnDateSelect && !this.picker.options.applyButton) {
+        if(this.options.startDate || this.picker.datePicked.length) {
+          const startDate = (this.picker.datePicked.length === 0) ? this.picker.getStartDate() : this.picker.datePicked[0];
+          const endDate = (this.picker.datePicked.length === 2) ? this.picker.datePicked[1] : this.picker.getEndDate();
+
+          const indicatorCtr = target.querySelector('.selected-dates-indicator');
+          const indicatorStart = target.querySelector('.indicator-start');
+          const indicator:HTMLButtonElement = target.querySelector('.indicator-button');
+
+          indicatorCtr.classList.add('date-selected');
+
+          const date = this.picker.getStartDate();
+          const pickedDate =  this.picker.datePicked[0] instanceof Date ? this.picker.datePicked[0] : null;
+          const existingDate = !date
+            ? pickedDate
+            : date && pickedDate
+            ? pickedDate
+            : date;
+          indicatorStart.innerHTML = 
+            `${existingDate.getDate()}${this.picker.daySuffix(existingDate.getDate())} ${this.picker.monthMap[existingDate.getMonth()]}`;
+
+          if(endDate) {
+            const sameYear = startDate.getFullYear() === endDate.getFullYear();
+            
+            const indicatorSeparator = document.createElement('span');
+            indicatorSeparator.className = 'indicator-separator';
+            indicatorSeparator.innerHTML = '→';
+            
+            const indicatorEnd = document.createElement('span');
+            indicatorEnd.className = 'indicator-end';
+      
+            indicatorStart.innerHTML = 
+              `${startDate.getDate()}${this.picker.daySuffix(startDate.getDate())} ${this.picker.monthMap[startDate.getMonth()]} ${(!sameYear) ? startDate.getFullYear(): ''}`;
+      
+            if(this.picker.datePicked.length === 0 || this.picker.datePicked.length === 2) {
+              if(!(startDate.getDate() === endDate.getDate() && startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear())) {
+                indicatorEnd.innerHTML = 
+                `${endDate.getDate()}${this.picker.daySuffix(endDate.getDate())} ${this.picker.monthMap[endDate.getMonth()]} ${(!sameYear) ? endDate.getFullYear(): ''}`;
+                indicator.appendChild(indicatorSeparator);
+                indicator.appendChild(indicatorEnd);
+              }
+              
+              indicator.disabled = false;
+            }
+          }
+        }
+
+
+        
+      }
     }
   }
 
@@ -588,7 +640,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
           this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
 
-          this.picker.hide();
+          if(!this.picker.options.hideOnDateSelect)
+            this.picker.hide();
         } else {
           this.hideTooltip();
 
@@ -617,8 +670,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       }
 
       this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
-
-      this.picker.hide();
+      if(!this.picker.options.hideOnDateSelect)
+        this.picker.hide();
     }
   }
 

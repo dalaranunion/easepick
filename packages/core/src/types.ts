@@ -25,7 +25,9 @@ export interface IPickerConfig {
   grid?: number;
   calendars?: number;
   readonly?: boolean;
+  applyButton?: boolean;
   autoApply?: boolean;
+  hideOnDateSelect?: boolean;
   header?: boolean | string | HTMLElement;
   locale?: {
     previousMonth?: string;

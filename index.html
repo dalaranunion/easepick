@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./packages/bundle/bundle/dist/index.umd.js"></script>
+</head>
+<body style="background-color: gainsboro;">
+    <div style="display: flex; height: 100%; align-items: center; min-height: 60vh;">
+        <div style="display: block; margin: 0 auto; max-width: 320px"><input autocomplete="off" type="text" id="calendar-dates"/></div>
+    </div>
+</body>
+<script>
+    window.addEventListener("DOMContentLoaded", () =>{
+        const today = new Date(Date.now());
+        const nextDay = new Date(new Date(Date.now()).setDate(today.getDate() + 1));
+        const thisWeek = new Date(new Date(Date.now()).setDate(today.getDate() + 7 - today.getDay()));
+        const thisMonth = new Date(new Date(Date.now()).setMonth(today.getMonth() + 1));
+
+    const datePicker = new easepick.create({
+        element: "#calendar-dates",
+        css: [
+            "./packages/bundle/bundle/dist/index.css"
+        ],
+        zIndex: 10,
+        format: "YYYY-MM-DD",
+        calendars: 1,
+        autoApply: false,
+        hideOnDateSelect: false,
+        grid: 1,
+        PresetPlugin: {
+            position: "top",
+            customPreset: {
+                'Today': [today, today],
+                'Tod0ay': [today, today],
+                'Tomorrow': [nextDay, nextDay],
+                'This week': [today, thisWeek],
+                'In a month': [today, thisMonth],
+            }
+        },
+        RangePlugin: {
+            delimiter: '.',
+
+        },
+        plugins: [
+            "RangePlugin",
+            "PresetPlugin"
+        ]
+    });
+    window.datePicker = datePicker;
+})
+</script>
+</html>

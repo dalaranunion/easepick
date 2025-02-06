@@ -71,12 +71,12 @@
 }
 
 .calendar {
-  padding: 18px 18px 0;
+  padding: 16px 16px 0;
   > .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0 22px;
+    padding: 0 0 14px;
     column-gap: 5px;
 
     .month-name {
@@ -147,7 +147,6 @@
   > .days-grid > .day {
     cursor: pointer;
     padding: 10px 0;
-    border: 1px solid transparent;
     border-radius: var(--ui-radius-day);
     width: var(--day-width);
     min-width: var(--day-width);
@@ -157,9 +156,8 @@
     max-height: var(--day-height);
 
     &:hover {
-      border: 1px solid rgba(204,0,0,.33);
       color: var(--color-fg-default);
-      background-color: rgba(204,0,0,.12)
+      background-color: var(--color-bg-surface-container-high);
     }
 
     &.today {
@@ -168,8 +166,8 @@
     }
 
     &.selected {
-      background-color: var(--color-fg-primary);
-      color: var(--color-fg-selected);
+      background-color: var(--color-bg-surface-container-highest);
+      color: var(--color-fg-default);
     }
   }
 }

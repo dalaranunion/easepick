@@ -1,20 +1,25 @@
 :host {
   --color-bg-default: #fff;
-  --color-bg-secondary: #F8F8F8;
+  --color-bg-secondary: #DADADA;
   --color-fg-default: #1B1C1D;
   --color-fg-primary: #cc0000;
   --color-fg-secondary: #1B1C1D;
   --color-fg-selected: #fff;
   --color-fg-muted: rgb(27, 28, 29,.33);
-  --color-fg-accent: #e63757;
+  --color-fg-accent: #932C00;
 
-  --color-btn-primary-bg: #cc0000;
+  --color-bg-surface-container-low:#F3F3F3;
+  --color-bg-surface-container:#EEEEEE;
+  --color-bg-surface-container-high: #E8E8E8;
+  --color-bg-surface-container-highest:#E2E2E2;
+
+  --color-btn-primary-bg: #000000;
   --color-btn-primary-fg: #fff;
-  --color-btn-primary-border: #cc0000;
+  --color-btn-primary-border: #000000;
 
-  --color-btn-primary-hover-bg: #cc0000;
+  --color-btn-primary-hover-bg: #212121;
   --color-btn-primary-hover-fg: #fff;
-  --color-btn-primary-hover-border: #cc0000;
+  --color-btn-primary-hover-border: #212121;
 
   --color-btn-primary-disabled-bg: rgba(27, 28, 29,.12);
   --color-btn-primary-disabled-fg: #1B1C1D;
@@ -37,13 +42,13 @@
   --color-border-default: #75777B;
   --color-border-locked: #f9f9f9;
 
-  --day-width: 42px;
-  --day-height: 37px;
+  --day-width: 40px;
+  --day-height: 40px;
   --border-radius: 2px;
 
   --button-radius: 16px;
   --ui-radius: 16px;
-  --ui-radius-day: 8px;
+  --ui-radius-day: 999999px;
 
   /* @deprecated */
   --primary-color: #6b82ff;

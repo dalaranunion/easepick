@@ -50,10 +50,6 @@
             border-top-right-radius: var(--ui-radius-day);
             border-bottom-right-radius: var(--ui-radius-day);
           }
-          &:hover {
-            border-color: transparent;
-            background-color: rgba(204,0,0,.12);
-          }
         }
 
         &.in-range {
@@ -63,8 +59,8 @@
 
         &.start,
         &.end {
-          background-color: var(--color-fg-primary);
-          color: var(--color-fg-selected);
+          background-color: var(--color-bg-surface-container-highest);
+          color: var(--color-fg-default);
         }
 
         &.start {
@@ -144,18 +140,18 @@
           border-top-left-radius: var(--ui-radius-day);
           border-bottom-left-radius: var(--ui-radius-day);
         }
-        &:nth-child(7n) {
-          &.in-range {
-            border-top-right-radius: var(--ui-radius-day);
-            border-bottom-right-radius: var(--ui-radius-day);
-          }
-        }
-        &:nth-child(7n + 1) {
-          &.in-range {
-            border-top-left-radius: var(--ui-radius-day);
-            border-bottom-left-radius: var(--ui-radius-day);
-          }
-        }
+        // &:nth-child(7n) {
+        //   &.in-range {
+        //     border-top-right-radius: var(--ui-radius-day);
+        //     border-bottom-right-radius: var(--ui-radius-day);
+        //   }
+        // }
+        // &:nth-child(7n + 1) {
+        //   &.in-range {
+        //     border-top-left-radius: var(--ui-radius-day);
+        //     border-bottom-left-radius: var(--ui-radius-day);
+        //   }
+        // }
       }
     }
   }

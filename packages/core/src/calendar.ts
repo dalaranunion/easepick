@@ -166,9 +166,6 @@ export default class Calendar {
       indicator.className = 'indicator-button apply-button unit';
       const indicatorStart = document.createElement('span');
       indicatorStart.className = 'indicator-start';
-      const indicatorTitle = document.createElement('span');
-      indicatorTitle.className = 'indicator-title';
-      indicatorTitle.innerHTML = 'Selected';
       indicator.disabled = true;          
       if(this.picker.options.date || this.picker.datePicked.length) {
         indicatorCtr.classList.add('date-selected');
@@ -184,7 +181,6 @@ export default class Calendar {
         indicator.appendChild(indicatorStart);
         indicator.disabled = false;    
       }
-      indicatorCtr.appendChild(indicatorTitle);
       indicatorCtr.appendChild(indicator);
       indicator.appendChild(indicatorStart);
       element.appendChild(indicatorCtr);

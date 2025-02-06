@@ -34,6 +34,8 @@ export class Core {
     autoApply: true,
     hideOnDateSelect: false,
     header: false,
+    overlay: false,
+    overlayColor: 'rgba(0,0,0,.5)',
     inline: false,
     scrollToDate: true,
     locale: {
@@ -62,9 +64,12 @@ export class Core {
 
     this.handleOptions();
 
+
+
     this.ui.wrapper = document.createElement('span');
     this.ui.wrapper.style.display = 'none';
-    this.ui.wrapper.style.position = 'absolute';
+    if(window.innerWidth > 480)
+      this.ui.wrapper.style.position = 'absolute';
     this.ui.wrapper.style.pointerEvents = 'none';
     this.ui.wrapper.className = 'easepick-wrapper';
     this.ui.wrapper.attachShadow({ mode: 'open' });
@@ -73,8 +78,19 @@ export class Core {
     this.ui.container = document.createElement('div');
     this.ui.container.className = 'container';
 
+    this.ui.wrapper 
+
+    if(this.options.overlay) {
+      this.ui.overlay = document.createElement('div');
+      this.ui.overlay.className = 'overlay';
+      this.ui.overlay.style.backgroundColor = this.options.overlayColor;
+      this.ui.shadowRoot.appendChild(this.ui.overlay);
+    }
+
     if (this.options.zIndex) {
       this.ui.container.style.zIndex = String(this.options.zIndex);
+      if(this.options.overlay)
+        this.ui.overlay.style.zIndex = String(this.options.zIndex);      
     }
 
     if (this.options.inline) {
@@ -318,6 +334,8 @@ export class Core {
     this.ui.container.style.top = `${top}px`;
     this.ui.container.style.left = `${left}px`;
     this.ui.container.classList.add('show');
+    if(this.options.overlay)
+      this.ui.overlay.classList.add('show');
 
     this.trigger('show', { target: target });
   }
@@ -327,6 +345,8 @@ export class Core {
    */
   public hide(): void {
     this.ui.container.classList.remove('show');
+    if(this.options.overlay)
+      this.ui.overlay.classList.remove('show');
 
     this.datePicked.length = 0;
 

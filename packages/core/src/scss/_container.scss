@@ -1,6 +1,19 @@
 * {
     box-sizing: border-box;
 }
+.overlay {
+    position: fixed;
+    height: 0;
+    transform: scale(0);
+}
+.overlay.show {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    transform: scale(1);
+}
 .container {
     display: inline-block;
     border-radius: 4px;

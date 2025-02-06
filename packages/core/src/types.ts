@@ -12,6 +12,7 @@ export interface IPickerElements {
   container: HTMLElement;
   shadowRoot: ShadowRoot;
   wrapper: HTMLElement;
+  overlay?: HTMLElement;
 }
 
 export interface IPickerConfig {
@@ -29,6 +30,8 @@ export interface IPickerConfig {
   autoApply?: boolean;
   hideOnDateSelect?: boolean;
   header?: boolean | string | HTMLElement;
+  overlay?: boolean;
+  overlayColor?: string;
   locale?: {
     previousMonth?: string;
     nextMonth?: string;

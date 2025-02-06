@@ -177,19 +177,15 @@
 @media (max-width: 480px) {
   .container:not(.inline) {
     transform: scaleY(0) !important;
-    transform-origin: bottom center !important;
+    transform-origin: top center !important;
 
     &.show {
-      position: fixed !important;
-      bottom: 0 !important;
       top: auto !important;
       left: 0 !important;
       right: 0 !important;
       transform: scaleY(1) !important;
+      padding: 1rem;
     }
-  }
-  .container {
-    width: 100%;
   }
   .calendars {
     grid-template-columns: repeat(1, 1fr);
